@@ -1,6 +1,6 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { askToGPT } from './controllers/index.js';
+const express = require('express');
+const dotenv = require('dotenv');
+const { askToGPT } = require('./controllers/index.js');
 
 dotenv.config();
 
@@ -19,5 +19,5 @@ app.listen(process.env.PORT, () => {
 })
 
 
-export default app;
+module.exports = app;
 

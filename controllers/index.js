@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import OpenAI from 'openai';
+const dotenv = require('dotenv');
+const OpenAI = require('openai');
 
 dotenv.config();
 
@@ -8,7 +8,7 @@ const openai = new OpenAI({
 });
 
 
-export const askToGPT = async (req, res) => {
+const askToGPT = async (req, res) => {
   const { text, question } = req.body;
   if (!text && !question) {
     res.status(400).json({ error: "text and question are required" });
@@ -29,4 +29,8 @@ export const askToGPT = async (req, res) => {
   const { choices } = completion;
   const { message } = choices[0];
   res.status(200).json({ message: message.content });
+}
+
+module.exports = {
+  askToGPT
 }
