@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { askToGPT } from './controllers';
+import { askToGPT } from './controllers/index.js';
 
 dotenv.config();
 
