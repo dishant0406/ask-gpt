@@ -1,11 +1,14 @@
 const dotenv = require('dotenv');
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai')
 
 dotenv.config();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const genAi = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+
+const genAIModal = genAi.getGenerativeModel({
+  model: 'gemini-pro'
+})
+
 
 
 const askToGPT = async (req, res) => {
@@ -16,19 +19,10 @@ const askToGPT = async (req, res) => {
 
   const prompt = `${text || ''} \n\n ${question || ''}\n`;
 
+  const completion = await genAIModal.generateContent(prompt)
+  const message = completion.response.candidates[0].content.parts[0].text
 
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4',
-    messages: [{
-      role: 'user',
-      content: prompt,
-    }],
-    temperature: 0.1
-  });
-
-  const { choices } = completion;
-  const { message } = choices[0];
-  res.status(200).json({ message: message.content });
+  res.status(200).json({ message });
 }
 
 module.exports = {
